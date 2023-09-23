@@ -1,0 +1,1 @@
+My solutions to exercises from "Structure and Interpretation of Computer Programs". I'm following Berkeley's CS61A from 2011. Included are code solutions and some descriptions of how I arrive at the solutions (found in .md files each week)
