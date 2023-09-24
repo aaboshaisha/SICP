@@ -2,7 +2,7 @@ Week1 Summary and Reflections:
 
 This week we start our discussion of "computational processes" and of the programming language LISP (a certain dialect of it Scheme). 
 
-Math vs Programming: Math (as a language) is concerned mostly with describing "what is x" aka declarative knowledge. Programming languages are concerned with describing "how to do x" aka imperative knowledge. An illustrative example is the mathematical function $\sqrt{x} = y such that y >= 0 and y^2 = x$.
+Math vs Programming: Math (as a language) is concerned mostly with describing "what is x" aka declarative knowledge. Programming languages are concerned with describing "how to do x" aka imperative knowledge. An illustrative example is the mathematical function $\sqrt{x} = y$ such that $y >= 0$ and $y^2 = x$.
 
 This function tells us “What” a square root is. We can use it to decide whether some number we’re given is a square root of another. We can use it to derive other facts about square roots in general. 
 
