@@ -1,4 +1,5 @@
-Week1 Summary and Reflections: 
+## Week1 Summary and Reflections: 
+---------------------------------
 
 This week we start our discussion of "computational processes" and of the programming language LISP (a certain dialect of it Scheme). 
 
