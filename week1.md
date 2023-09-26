@@ -60,14 +60,17 @@ Interpreters
 Interpreters take what we write in LISP and convert it to something a computer can use. How will interpreters evaluate our expressions? 
 
 Two possible ways:
-1. Go over each expression left to right. Evaluate all operators and operands until we get an expression with only primitives. Now compute. This is called "Normal order" evaluation.
-2. Go over the expression left to right. Evaluate the operator and operands then apply as you go. 
+1. Go over each expression. Evaluate all operators and operands until we get an expression with only primitives. Now compute. This is called "Normal order" evaluation.
+2. Go over the expression. Evaluate the operator and operands then apply as you go. 
 
 In 2, we don't wait for all operators and operands in the whole expression before we can apply some. Whatever gets evaluated gets applied as we go.
 
 LISP used "2".
 
 NB: There are what are called "special forms" which get evaluated differently.
+
+NB: Scheme doesn't evaluate expressions L -> R or R -> L but inside out.
+
 
 -----------------------
 Functions vs Procedures
