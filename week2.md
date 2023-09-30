@@ -1,6 +1,6 @@
-Week2 - Higher order procedures
+# Week2 - Higher order procedures
 
-abstraction: giving names to common patterns and working with the abstraction directly
+**abstraction**: giving names to common patterns and working with the abstraction directly
 
 Here we create small machines that can be parts of many bigger machines.
 Bigger machines can CREATE these smaller machines (Procedures as output / procedures that return procedures). 
@@ -8,9 +8,8 @@ Bigger machines can also USE these smaller machines as parts (Procedures as inpu
 
 Procedures passed here express common programming patterns we find / discover and see they’re useful in many cases so we decide to abstract them and use them as parts.
 
-———————————————————
-Summary of the core ideas this week
-———————————————————
+## Summary of the core ideas this week
+
 In week 1 we learned about recursion:\
 Think writing programs that are function compositions in the form f(g(x)). 
 Recursion is best suited for this because u can keep calling functions like: 
@@ -29,9 +28,9 @@ $$ D (g(x)) = \frac {(g(x + dx) - g(x))}  {dx} = g’(x) $$
 g(x) -[D]-> g’(x)
 ```
 
-—————————————————-
-Procedures as arguments / inputs
-—————————————————-
+## Procedures as arguments / inputs
+
+
 ```
 #lang racket
 (require berkeley)
@@ -64,9 +63,8 @@ Procedures as arguments / inputs
 (define (pi-sum2 a b)
   (sum (lambda (x) (/ 1.0 (* x (+ x 2)))) a (lambda (x) (+ x 4)) b))
 ```
-———————————————
-lambda, let syntactic sugar
-———————————————
+
+## lambda, let syntactic sugar
 
 suppose we have the following function 
 $$f(x, y) = x(1 + xy)^2 + y(1-y) + (1+xy)(1-y)$$
@@ -124,8 +122,8 @@ define f(x,y):
 	define b -> (1 - y)
 	body: (xa^2 + yb + ab)
 ```
-lambda syntax:
->> `( lambda ( < parameters> ) <body> ) `
+
+lambda syntax: `( lambda ( < parameters> ) <body> ) `
 
 let syntax:
 ```
@@ -137,17 +135,18 @@ let syntax:
 	<body>
 ) 
 ```
-—————————————————————————————————
-Procedures as returned values: the example of average damping
-—————————————————————————————————
+
+## Procedures as returned values: the example of average damping
+
 How does this allow more expressive power? 
 
 Consider the example of computing sqrt(x). What’s our algorithm? 
 
+```
 start with initial guess
 if good-enough? return it
 else try next-guess -> average (guess , x/guess) 
-
+```
 
 ```
 #lang racket
@@ -214,13 +213,11 @@ If some computational element of the language has these abilities, they’re sai
 The ability to use procedures as data lets us build any control mechanism we want
 
 
-—————————————————————
-Let and Lambda (example from CS61A notes)
-—————————————————————
+## Let and Lambda (example from CS61A notes)
 
 We write a function that returns a sentence containing the two roots of the quadratic equation ax2 +bx+c = 0 
 using the formula 
-`x = (−b ± √b2 − 4ac) / 2a `
+$$ x = \frac {(−b ± \sqrt{b2 − 4ac})} {2a}$$ `
 
 Could be written as: 
 ```
