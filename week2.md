@@ -217,7 +217,7 @@ The ability to use procedures as data lets us build any control mechanism we wan
 
 We write a function that returns a sentence containing the two roots of the quadratic equation ax2 +bx+c = 0 
 using the formula 
-$$x = \frac{(−b ± \sqrt{b2 − 4ac})} {2a}$$ `
+$$x = \frac{(−b ± \sqrt{b^2 − 4ac})} {2a}$$ `
 
 Could be written as: 
 ```
