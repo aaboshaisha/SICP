@@ -288,8 +288,29 @@ The two versions:
         )))
 ```
 
+## A Note on lambda and math:
 
+The expression $ax+b$ is not a function but a number. 
 
+If u want to talk about the function $f(x) = ax + b$ real mathematicians would say
+
+$$x \mapsto ax + b$$
+
+Why express it this way? 
+
+Suppopse we have the expression $xy+z$. How do we know if this is a function of x or y or z or y and z or .... 
+
+Maybe it is 
+
+$$y \mapsto xy + z$$
+$$ {x, y, z} \mapsto xy + z$$
+$$ {x, z} \mapsto xy + z$$
+
+and so on
+
+$ \mapsto $ is not in the keybopard so we used λ : lambda
+
+λx means a function of x
 
 
 
