@@ -303,7 +303,9 @@ Suppopse we have the expression $xy+z$. How do we know if this is a function of 
 Maybe it is 
 
 $$y \mapsto xy + z$$
+
 $$ {x, y, z} \mapsto xy + z$$
+
 $$ {x, z} \mapsto xy + z$$
 
 and so on
