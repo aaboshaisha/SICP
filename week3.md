@@ -34,7 +34,7 @@ this translates directly into a procedure:
 In this algorithm factorial 4 = 4 x 3 x 2 x 1\
 if we use the substitution model to see how this compiles:
 
-![linear recursive]("Figure 1.3 linear recursive.png")
+![linear recursive](Figure 1_3 linear recursive.png)
 
 We can see that this process evolves by expanding then contracting.\
 It expands because at each step it keeps building up a chain of deferred operations (we need the interpreter to keep track of them) until we get to the base case where computations are performed so it contracts.
@@ -77,7 +77,7 @@ and  n! is the value of the product when the counter exceeds n.
 ```
 This one will look like: 
 
-![iterative](Figure 1.4 linear iterative.png)
+![linear iterative](Figure 1_4 linear iterative.png)
 ￼
 No expansion or contraction
 
@@ -86,8 +86,6 @@ No expansion or contraction
 | Each “step” of the computational process is called its current “state”. The iterative process produces intermediate variables (state variables) that keep track of “where” we are in the process. It also has a fixed rule that tells how to go from one state to the next. The state variables + fixed transition rule = iterative process | A process that builds a chain of deferred operations. It requires that the interpreter keep track of the operations to be performed later on. This is “hidden” information not contained in the program variables.  |
 | There us an (optional) end test that specifies conditions under which the process should terminate. | ... |
 | All information about “where” we are in the process is contained within the state variables. If we stopped the compu- tation between steps, all we would need to do to resume the computa- tion is to supply the interpreter with the values of the three program variables.  | Not the case here. If we stop the computation, we have no clue where we are without the information in the interpreter. |
-
-![iterative](Figure 1.4 linear iterative.png)
 
 Notice: a recursive process is not the same as recursive procedure. 
 A recursive process refers to the “evolution” (deferred operations -> expansion and contraction) described above.
@@ -127,7 +125,7 @@ This can be directly translated to:
 
 It looks like:
 ￼
-![tree](Figure 1.5 The tree-recursive process generated in fib.png)
+![fib tree](Figure 1_5 The tree-recursive process generated in fib.png)
 
 And it’s a terrible way to compute Fibbonaci since there is a lot of redundant computations and it exponentially grows. 
 
@@ -178,7 +176,7 @@ We can use it to describe an algorithm if we specify the following degenerate ca
 
 And it looks like:
 
-[! cc tree](cc_tree.jpg)
+![cc tree](cc_tree.jpg)
 
 
 A few notes on functional programming (from Brian Harvey’s lecture):
