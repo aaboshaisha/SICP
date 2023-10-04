@@ -34,7 +34,7 @@ this translates directly into a procedure:
 In this algorithm factorial 4 = 4 x 3 x 2 x 1\
 if we use the substitution model to see how this compiles:
 
-![linear recursive](Figure 1_3 linear recursive.png)
+![linear recursive](f1_3.png)
 
 We can see that this process evolves by expanding then contracting.\
 It expands because at each step it keeps building up a chain of deferred operations (we need the interpreter to keep track of them) until we get to the base case where computations are performed so it contracts.
@@ -77,7 +77,7 @@ and  n! is the value of the product when the counter exceeds n.
 ```
 This one will look like: 
 
-![linear iterative](Figure 1_4 linear iterative.png)
+![linear iterative](f1_4.png)
 ￼
 No expansion or contraction
 
@@ -125,7 +125,7 @@ This can be directly translated to:
 
 It looks like:
 ￼
-![fib tree](Figure 1_5 The tree-recursive process generated in fib.png)
+![fib tree](f1_5.png)
 
 And it’s a terrible way to compute Fibbonaci since there is a lot of redundant computations and it exponentially grows. 
 
