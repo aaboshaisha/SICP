@@ -14,4 +14,4 @@ p-> product
 (exp-iter 3 0 81) 4
 ```
 
-We can see that $b{(n - c)} = p$
+We can see that $b^{(n - c)} = p$
