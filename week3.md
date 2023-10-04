@@ -34,7 +34,7 @@ this translates directly into a procedure:
 In this algorithm factorial 4 = 4 x 3 x 2 x 1\
 if we use the substitution model to see how this compiles:
 
-![linear recursive](/Figure 1.3 linear recursive.png)
+![linear recursive]("Figure 1.3 linear recursive.png")
 
 We can see that this process evolves by expanding then contracting.\
 It expands because at each step it keeps building up a chain of deferred operations (we need the interpreter to keep track of them) until we get to the base case where computations are performed so it contracts.
