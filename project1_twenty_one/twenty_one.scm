@@ -5,14 +5,14 @@
 (define (best-total hand)
   ; score cards as if ace = 11
   (define (score-card card)
-    (cond ((equal? (butlast card) 'a) 11)
-          ((or (equal? (butlast card) 'j) (equal? (butlast card) 'q) (equal? (butlast card) 'k)) 10)
+    (cond ((equal? (butlast card) 'A) 11)
+          ((or (equal? (butlast card) 'J) (equal? (butlast card) 'Q) (equal? (butlast card) 'K)) 10)
           (else (butlast card))))
 
   ; count how many aces in a hand
   (define (count-aces hand)
     (define (ace? c)
-      (if (equal? (butlast c) 'a) 1 0))
+      (if (equal? (butlast c) 'A) 1 0))
     (if (empty? hand)
         0
         (+ (ace? (first hand)) (count-aces (butfirst hand)))))
@@ -31,9 +31,9 @@
         hand-total))
   (update (total hand) (count-aces hand)))
 
-(best-total '(ad 8s))
-(best-total '(ad 8s 5h))
-(best-total '(ad as 9h))
+(best-total '(Ad 8s))
+(best-total '(Ad 8s 5h))
+(best-total '(Ad As 9h))
 
 
 ; Define a strategy procedure stop-at-17 that’s identical to the dealer’s, i.e., takes a
@@ -45,8 +45,8 @@
   (if (< (best-total customer-hand-so-far) 17) #t #f))
 
 ;testing
-(stop-at-17 '(ad 5h) (word 'as))
-(stop-at-17 '(ad 5s 5h) (word 'as))
+(stop-at-17 '(Ad 5h) (word 'as))
+(stop-at-17 '(Ad 5s 5h) (word 'as))
 
 ;----------------------------------------------------------------------------------
 ; starter code
@@ -99,12 +99,8 @@
 
 
 
+(require racket/trace)
+;(trace twenty-one)
+(twenty-one stop-at-17)
 
 
-
-
-
-
-
-
-;                                      32
