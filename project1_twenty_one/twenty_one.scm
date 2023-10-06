@@ -93,14 +93,17 @@
     	(move-card deck '() (random size)) ))
   (shuffle (make-ordered-deck) 52) )
 
-
-
-
-
+(define (play-n strategy n)
+  (if (= n 0)
+      0
+      (+ (twenty-one strategy) (play-n strategy (- n 1)))))
 
 
 (require racket/trace)
-;(trace twenty-one)
-(twenty-one stop-at-17)
+(trace stop-at-17)
+(play-n stop-at-17 1)
+(play-n stop-at-17 3)
+;(play-n stop-at-17 10)
+
 
 
