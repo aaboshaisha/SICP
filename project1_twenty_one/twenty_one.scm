@@ -1,5 +1,43 @@
+#lang racket
+(require berkeley)
+
+; my code here
+(define (best-total hand)
+  ; score cards as if ace = 11
+  (define (score-card card)
+    (cond ((equal? (butlast card) 'a) 11)
+          ((or (equal? (butlast card) 'j) (equal? (butlast card) 'q) (equal? (butlast card) 'k)) 10)
+          (else (butlast card))))
+
+  ; count how many aces in a hand
+  (define (count-aces hand)
+    (define (ace? c)
+      (if (equal? (butlast c) 'a) 1 0))
+    (if (empty? hand)
+        0
+        (+ (ace? (first hand)) (count-aces (butfirst hand)))))
+
+  ; compute total with ace = 11
+  (define (total hand)
+    (if (empty? hand)
+        0
+        (+ (score-card (first hand)) (total (butfirst hand)))))
+
+  ; If our hand has one or more aces, we can change each one
+  ; Keep changing ace from 11 to 1 till total < 21 or u run out of aces to change
+  (define (update hand-total ace-count)
+    (if (and (> hand-total 21) (> ace-count 0))
+        (update (- hand-total 10) (- ace-count 1))
+        hand-total))
+  (update (total hand) (count-aces hand)))
+
+(best-total '(ad 8s))
+(best-total '(ad 8s 5h))
+(best-total '(ad as 9h))
 
 
+;----------------------------------------------------------------------------------
+; starter code
 (define (twenty-one strategy)
   (define (play-dealer customer-hand dealer-hand-so-far rest-of-deck)
     (cond ((> (best-total dealer-hand-so-far) 21) 1)
