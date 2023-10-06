@@ -134,8 +134,20 @@
 
 ;(trace dealer-sensitive)
 
-;(best-total '(Ad 8s 5h))
-;(best-total '(Ad As 9h))
-(dealer-sensitive '(Ad 5s) 'Ah)
-(dealer-sensitive '(Ad 2s) '7h)
-(dealer-sensitive '(Kt 9s) 'Ah)
+;Testing
+;(dealer-sensitive '(Ad 5s) 'Ah)
+;(dealer-sensitive '(Ad 2s) '7h)
+;(dealer-sensitive '(Kt 9s) 'Ah)
+
+
+; Generalize stop-at-n
+;(stop-at n) should return a strategy that keeps hitting until a hand’s total is n or more
+(define (stop-at-n n)
+  (lambda (customer-hand-so-far dealer-up-card)
+    (if (< (best-total customer-hand-so-far) n) #t #f)))
+
+;(stop-at-n 17)
+((stop-at-n 17) '(Ad 5s 5h) (word 'as))
+; test if strategy works in a game
+(twenty-one (stop-at-n 12))
+(play-n (stop-at-n 12) 20)
