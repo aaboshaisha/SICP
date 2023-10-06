@@ -31,9 +31,10 @@
         hand-total))
   (update (total hand) (count-aces hand)))
 
-(best-total '(Ad 8s))
-(best-total '(Ad 8s 5h))
-(best-total '(Ad As 9h))
+;testing
+;(best-total '(Ad 8s))
+;(best-total '(Ad 8s 5h))
+;(best-total '(Ad As 9h))
 
 
 ; Define a strategy procedure stop-at-17 that’s identical to the dealer’s, i.e., takes a
@@ -45,8 +46,8 @@
   (if (< (best-total customer-hand-so-far) 17) #t #f))
 
 ;testing
-(stop-at-17 '(Ad 5h) (word 'as))
-(stop-at-17 '(Ad 5s 5h) (word 'as))
+;(stop-at-17 '(Ad 5h) (word 'as))
+;(stop-at-17 '(Ad 5s 5h) (word 'as))
 
 ;----------------------------------------------------------------------------------
 ; starter code
@@ -93,6 +94,8 @@
     	(move-card deck '() (random size)) ))
   (shuffle (make-ordered-deck) 52) )
 
+
+; play-n
 (define (play-n strategy n)
   (if (= n 0)
       0
@@ -100,10 +103,39 @@
 
 
 (require racket/trace)
-(trace stop-at-17)
-(play-n stop-at-17 1)
-(play-n stop-at-17 3)
+;(trace stop-at-17)
+;(play-n stop-at-17 1)
+;(play-n stop-at-17 3)
 ;(play-n stop-at-17 10)
 
+; dealer sensitive
+(define (dealer-sensitive customer-hand-so-far dealer-up-card)
+  (if (or (and (or (equal? (butlast dealer-up-card) 7)
+                   (equal? (butlast dealer-up-card) 8)
+                   (equal? (butlast dealer-up-card) 9)
+                   (equal? (butlast dealer-up-card) 10))
+                   (equal? (butlast dealer-up-card) 'A)
+                   (equal? (butlast dealer-up-card) 'J) 
+                   (equal? (butlast dealer-up-card) 'Q)
+                   (equal? (butlast dealer-up-card) 'K))
+               
+               (< (best-total customer-hand-so-far) 17)
+          
+          (and (or (equal? (butlast dealer-up-card) 2)
+                   (equal? (butlast dealer-up-card) 3)
+                   (equal? (butlast dealer-up-card) 4)
+                   (equal? (butlast dealer-up-card) 5)
+                   (equal? (butlast dealer-up-card) 6))
+               (< (best-total customer-hand-so-far) 12)))
+      #t
+      #f))
 
 
+
+;(trace dealer-sensitive)
+
+;(best-total '(Ad 8s 5h))
+;(best-total '(Ad As 9h))
+(dealer-sensitive '(Ad 5s) 'Ah)
+(dealer-sensitive '(Ad 2s) '7h)
+(dealer-sensitive '(Kt 9s) 'Ah)
