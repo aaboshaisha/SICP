@@ -180,8 +180,8 @@
       #f
       (or (equal? (last (first hand)) suit) (suit-in-hand (butfirst hand) suit) )))
 
-(suit-in-hand '(AS AC 5H) 'S)
-(suit-in-hand '(AS AC 5H) 'T)
+;(suit-in-hand '(AS AC 5H) 'S)
+;(suit-in-hand '(AS AC 5H) 'T)
 
 (define (suit-strategy suit strategy-not strategy-inc)
   (lambda (customer-hand dealer-card)
@@ -194,15 +194,31 @@
   customer-hand-so-far dealer-up-card))
 
 ;(trace suit-strategy)
-'(Testing valentine against valentine2)
-(valentine '(KC 9S) 'AD)
-(valentine '(KH 2S) '3D)
-(valentine2 '(KC 9S) 'AD)
-(valentine2 '(KH 2S) '3D)
+;'(Testing valentine against valentine2)
+;(valentine '(KC 9S) 'AD)
+;(valentine '(KH 2S) '3D)
+;(valentine2 '(KC 9S) 'AD)
+;(valentine2 '(KH 2S) '3D)
 
+; majority
+;Define a function majority that takes three strategies as arguments and produces a strategy
+;as a result, such that the result strategy always decides whether or not to “hit” by consulting
+;the three argument strategies, and going with the majority.
+;That is, the result strategy should return #t if and only if at least two of the three
+;argument strategies do.
 
-        
-  
+(define (majority s1 s2 s3)
+  (lambda (hand card)
+    (cond ((and (s1 hand card) (s2 hand card)) #t)
+          ((and (s1 hand card) (s3 hand card)) #t)
+          ((and (s2 hand card) (s3 hand card)) #t)
+          ((and (s1 hand card) (s2 hand card) (s3 hand card)) #t)
+          (else #f))))
+
+((majority stop-at-17 dealer-sensitive valentine) '(KC 9S) 'AD)
+          
+(play-n (majority stop-at-17 dealer-sensitive valentine) 50)
+
 
 
  
