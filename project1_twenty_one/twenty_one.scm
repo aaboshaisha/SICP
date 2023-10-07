@@ -147,7 +147,62 @@
     (if (< (best-total customer-hand-so-far) n) #t #f)))
 
 ;(stop-at-n 17)
-((stop-at-n 17) '(Ad 5s 5h) (word 'as))
+;((stop-at-n 17) '(Ad 5s 5h) (word 'as))
 ; test if strategy works in a game
-(twenty-one (stop-at-n 12))
-(play-n (stop-at-n 12) 20)
+;(twenty-one (stop-at-n 12))
+;(play-n (stop-at-n 12) 20)
+
+; Valentine
+(define (heart-in-hand customer-hand-so-far)
+  (if (empty? customer-hand-so-far)
+      #f
+      (or (equal? (last (first customer-hand-so-far)) 'H)
+          (heart-in-hand (butfirst customer-hand-so-far)) )
+      ))
+
+;(heart-in-hand '(AS AH 3T))
+;(heart-in-hand '(3S 4D 10C))
+
+(define (valentine customer-hand-so-far dealer-up-card)
+  (if (heart-in-hand customer-hand-so-far)
+      ((stop-at-n 19) customer-hand-so-far dealer-up-card)
+      ((stop-at-n 17) customer-hand-so-far dealer-up-card)))
+
+;Suits: SHDC
+;(trace valentine)
+
+
+;(play-n valentine 20)
+
+; suit-strategy
+(define (suit-in-hand hand suit)
+  (if (empty? hand)
+      #f
+      (or (equal? (last (first hand)) suit) (suit-in-hand (butfirst hand) suit) )))
+
+(suit-in-hand '(AS AC 5H) 'S)
+(suit-in-hand '(AS AC 5H) 'T)
+
+(define (suit-strategy suit strategy-not strategy-inc)
+  (lambda (customer-hand dealer-card)
+    (if (suit-in-hand customer-hand suit)
+        strategy-inc
+        strategy-not)))
+
+(define (valentine2 customer-hand-so-far dealer-up-card)
+  (((suit-strategy 'H (stop-at-n 17) (stop-at-n 19)) customer-hand-so-far dealer-up-card)
+  customer-hand-so-far dealer-up-card))
+
+;(trace suit-strategy)
+'(Testing valentine against valentine2)
+(valentine '(KC 9S) 'AD)
+(valentine '(KH 2S) '3D)
+(valentine2 '(KC 9S) 'AD)
+(valentine2 '(KH 2S) '3D)
+
+
+        
+  
+
+
+ 
