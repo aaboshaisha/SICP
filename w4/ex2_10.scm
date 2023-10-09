@@ -43,6 +43,15 @@
 
 (define x (make-interval 2 10))
 (define y (make-interval -3 3))
+(define y1 (make-interval 0 3))
+(define y2 (make-interval -3 0))
+(define y3 (make-interval -3 -1))
+(define y4 (make-interval 1 3))
+
 
 (div-interval x y)
 (div-interval y x)
+(div-interval x y1)
+(div-interval x y2)
+(div-interval x y3)
+(div-interval x y4)
