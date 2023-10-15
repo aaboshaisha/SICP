@@ -53,3 +53,11 @@ list1 is empty
 (append odds evens)
 (append evens odds)
 
+
+; mapping : apply function to list and return list
+(define (map lst f)
+  (if (empty? lst)
+      nil
+      (cons (f (car lst)) (map (cdr lst) f))))
+
+(map (list 1 2 3 4) square)
