@@ -6,7 +6,7 @@
 ;Example usage of racket drawing tools
 (define target (make-bitmap 100 100)) ; A 30x30 bitmap
 (define dc (new bitmap-dc% [bitmap target]))
-(send dc set-pen "red" 5 'solid)
+(send dc set-pen "red" 0.5 'solid)
 
 
 #|
@@ -32,13 +32,87 @@
 ;(draw-line (cons 0 0) (cons 1 1))
 ;(draw-line (cons 0 1) (cons 1 0))
 
-
-#|
+;-----------STARTER CODE----------------------------
 (define (right-split painter n)
   (if (= n 0)
       painter
       (let ( (smaller (right-split painter (- n 1))) )
         (beside painter (below smaller smaller)))))
+
+(define (transform-painter painter origin corner1 corner2)
+  (lambda (frame)
+    (let ((m (frame-coord-map frame)))
+      (let ((new-origin (m origin)))
+	(painter
+	 (make-frame new-origin
+		     (sub-vect (m corner1) new-origin)
+		     (sub-vect (m corner2) new-origin)))))))
+
+(define (beside painter1 painter2)
+  (let ((split-point (make-vect 0.5 0.0)))
+    (let ((paint-left
+	   (transform-painter painter1
+			      (make-vect 0.0 0.0)
+			      split-point
+			      (make-vect 0.0 1.0)))
+	  (paint-right
+	   (transform-painter painter2
+			      split-point
+			      (make-vect 1.0 0.0)
+			      (make-vect 0.5 1.0))))
+      (lambda (frame)
+	(paint-left frame)
+	(paint-right frame)))))
+
+(define (flip-vert painter)
+  (transform-painter painter
+		     (make-vect 0.0 1.0)
+		     (make-vect 1.0 1.0)
+		     (make-vect 0.0 0.0)))
+;---------------------------------------
+;Ex 2.50
+
+(define (flip-horz painter)
+  (transform-painter painter
+		     (make-vect 1.0 0.0)
+		     (make-vect 0.0 0.0)
+		     (make-vect 1.0 1.0)))
+
+(define (rotate90 painter)
+  (transform-painter painter
+		     (make-vect 1.0 0.0)
+		     (make-vect 1.0 1.0)
+		     (make-vect 0.0 0.0)))
+
+
+(define (rotate180 painter)
+  (transform-painter painter
+		     (make-vect 1.0 1.0)
+		     (make-vect 0.0 1.0)
+		     (make-vect 1.0 0.0)))
+
+
+(define (rotate270 painter)
+  (transform-painter painter
+		     (make-vect 0.0 1.0)
+		     (make-vect 0.0 0.0)
+		     (make-vect 1.0 1.0)))
+
+;Ex 2.51
+(define (below painter1 painter2)
+  (let ( (split-point (make-vect 0.0 0.5)) )
+    (let ( (paint-down (transform-painter painter1
+                                          (make-vect 0.0 0.0)
+                                          (make-vect 1.0 0.0)
+                                          split-point))
+           (paint-up (transform-painter painter2
+                                        split-point
+                                        (make-vect 1.0 0.5)
+                                        (make-vect 0.0 1.0)))
+           )
+      (lambda (frame) (paint-down frame) (paint-up frame)))))
+                                          
+
 
 ;Ex 2.44
 (define (up-split painter n)
@@ -64,13 +138,13 @@
   (lambda (painter n)
     (if (= n 0)
         painter
-        (let (smaller ((split f1 f2) painter (- n 1)))
+        (let ((smaller ((split f1 f2) painter (- n 1))))
           (f1 painter (f2 smaller smaller))))))
 
 ; redefine 
 (define right-split-2 (split beside below))
 (define up-split-2 (split below beside))
-|#
+
 
 ;2.46 implement vectors and vector operations
 (define (make-vect x y) (cons x y))
@@ -140,6 +214,7 @@
 (define (edge2-frame frame) (car (cdr (cdr frame))))
 
 ; Testing
+#|
 (define v1 (make-vect 2 3))
 (define v2 (make-vect 1 4))
 (define v3 (make-vect 5 2))
@@ -149,7 +224,7 @@
 (origin-frame frame1)
 (edge1-frame frame1)
 (edge2-frame frame1)
-
+|#
 
 
 ; frame-coord-map: returns lambda (V) |-> (Vf)
@@ -183,11 +258,11 @@
 ;((frame-coord-map a-frame) (make-vect 0 0)) ; asks where (0,0) would be in frame vector space -> should return
 ; origin of frame which is (1,1)
 ;(origin-frame a-frame)
-
 (define d-frame (make-frame (make-vect 0 0) (make-vect 100 0) (make-vect 0 100)))
-
 (define u-frame (make-frame (make-vect 0 0) (make-vect 1 0) (make-vect 0 1)))
 
+
+; Ex 2.49: Implementing painters
 ;(draw-line point1 point2) -> decomposes to (draw-line x1 y1 x2 y2)
 (define (x-painter frame)
   (let ((segment-list (list (make-segment (make-vect 0 0) (make-vect 1 1))
@@ -206,15 +281,6 @@
         ((segments->painter segment-list) frame)))
 
 
-(define (frame-corners frame)
-  (let ( (o (origin-frame frame))
-         (e1 (edge1-frame frame))
-         (e2 (edge2-frame frame)) )
-    (define e3 (add-vect o (add-vect e1 e2)))
-    (list o e1 e2 e3)))
-    
-(frame-corners u-frame)
-
 (define (outline frame)
   (let ( (o (origin-frame frame))
          (e1 (edge1-frame frame))
@@ -228,7 +294,7 @@
       ((segments->painter segment-list) frame))))
 
 
-
+; implementing wave
 (define wave-list (list 
                        (make-segment (make-vect .25 0) (make-vect .35 .5)) 
                        (make-segment (make-vect .35 .5) (make-vect .3 .6)) 
@@ -257,7 +323,12 @@
   ((segments->painter wave-list) frame))
 
 
-(wave u-frame)
+;(wave u-frame)
+;((flip-vert wave) u-frame)
+;((below wave wave) u-frame)
+;((beside diamond diamond) u-frame)
+((corner-split (flip-vert wave) 4) u-frame)
+
 ;(x-painter u-frame)
 ;(outline u-frame)
 ;(diamond u-frame)
