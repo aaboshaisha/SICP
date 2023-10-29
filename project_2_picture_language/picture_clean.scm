@@ -9,15 +9,6 @@
 (send dc set-pen "red" 0.5 'solid)
 
 
-#|
-(send dc set-brush "green" 'solid)
-(send dc set-pen "blue" 1 'solid)
-(send dc draw-rectangle 0 10 30 10)
-(send dc set-pen "red" 3 'solid)
-(send dc draw-line 0 0 30 30)
-(send dc draw-line 0 30 30 0)
-|#
-
 ; (draw-line x1 y1 x2 y2)
 (define sf 100)
 (define (draw-line point1 point2)
@@ -29,15 +20,14 @@
         ))
 
 
-;(draw-line (cons 0 0) (cons 1 1))
-;(draw-line (cons 0 1) (cons 1 0))
-
 ;-----------STARTER CODE----------------------------
+#|
 (define (right-split painter n)
   (if (= n 0)
       painter
       (let ( (smaller (right-split painter (- n 1))) )
         (beside painter (below smaller smaller)))))
+|#
 
 (define (transform-painter painter origin corner1 corner2)
   (lambda (frame)
@@ -97,7 +87,7 @@
 		     (make-vect 0.0 1.0)
 		     (make-vect 0.0 0.0)
 		     (make-vect 1.0 1.0)))
-
+;---------------------------------------
 ;Ex 2.51
 (define (below painter1 painter2)
   (let ( (split-point (make-vect 0.0 0.5)) )
@@ -113,15 +103,15 @@
       (lambda (frame) (paint-down frame) (paint-up frame)))))
                                           
 
-
+#|
 ;Ex 2.44
 (define (up-split painter n)
   (if (= n 0)
       painter
       (let ( (smaller (up-split painter (- n 1))) )
         (below painter (beside smaller smaller)))))
-
-
+|#
+;---------------------------------------
 (define (corner-split painter n)
   (if (= n 0)
       painter
@@ -133,6 +123,20 @@
           (beside (below painter top-left)
                   (below bottom-right corner))))))
 
+
+; Ex 2.52 b
+(define (corner-split-2 painter n)
+  (if (= n 0)
+      painter
+      (let ( (up (up-split painter (- n 1)))
+             (right (right-split painter (- n 1))) )
+        (let ( (top-left up)
+               (bottom-right right)
+               (corner (corner-split painter (- n 1))) )
+          (beside (below painter top-left)
+                  (below bottom-right corner))))))
+
+;---------------------------------------
 ;Ex 2.45
 (define (split f1 f2)
   (lambda (painter n)
@@ -142,10 +146,10 @@
           (f1 painter (f2 smaller smaller))))))
 
 ; redefine 
-(define right-split-2 (split beside below))
-(define up-split-2 (split below beside))
+(define right-split (split beside below))
+(define up-split (split below beside))
 
-
+;---------------------------------------
 ;2.46 implement vectors and vector operations
 (define (make-vect x y) (cons x y))
 (define (xcor-vect v) (car v))
@@ -169,62 +173,16 @@
   (make-vect (* s (xcor-vect v))
              (* s (ycor-vect v))))
 
-; Test Examples
-#|
-; Test adding two vectors
-(define v1 (make-vect 2 3))
-(define v2 (make-vect 1 4))
-(display "Addition: ")
-(display (add-vect v1 v2)) ; Expected output: (3 7)
-(newline)
-
-; Test subtracting two vectors
-(define v3 (make-vect 5 2))
-(define v4 (make-vect 3 1))
-(display "Subtraction: ")
-(display (sub-vect v3 v4)) ; Expected output: (2 1)
-(newline)
-
-; Test scaling a vector
-(define v5 (make-vect 3 4))
-(define scale-factor 2)
-(display "Scaling: ")
-(display (scale-vect scale-factor v5)) ; Expected output: (6 8)
-(newline)
-|#
-
-
+;---------------------------------------
 ;Ex 2.47 Frame constructors and selectors
 ;using cons
-#|
+
 (define (make-frame origin edge1 edge2)
   (cons origin (cons edge1 edge2)))
 
 (define (origin-frame frame) (car frame))
 (define (edge1-frame frame) (car (cdr frame)))
 (define (edge2-frame frame) (cdr (cdr frame)))
-|#
-
-;using list
-(define (make-frame origin edge1 edge2)
-  (list origin edge1 edge2))
-
-(define (origin-frame frame) (car frame))
-(define (edge1-frame frame) (car (cdr frame)))
-(define (edge2-frame frame) (car (cdr (cdr frame))))
-
-; Testing
-#|
-(define v1 (make-vect 2 3))
-(define v2 (make-vect 1 4))
-(define v3 (make-vect 5 2))
-(display "Testing frame selectors")
-(newline)
-(define frame1 (make-frame v1 v2 v3))
-(origin-frame frame1)
-(edge1-frame frame1)
-(edge2-frame frame1)
-|#
 
 
 ; frame-coord-map: returns lambda (V) |-> (Vf)
@@ -236,7 +194,7 @@
               (add-vect (scale-vect (xcor-vect v) (edge1-frame frame))
                         (scale-vect (ycor-vect v) (edge2-frame frame))))))
 
-
+;---------------------------------------
 ;Ex 2.48
 (define (make-segment start-point end-point)
   (cons (make-vect 0 start-point) (make-vect 0 end-point)))
@@ -253,15 +211,12 @@
      segment-list)))
 
 
-; Testing if our frame procedures work
+
 (define a-frame (make-frame (make-vect 1 1) (make-vect 3 2) (make-vect 0 3)))
-;((frame-coord-map a-frame) (make-vect 0 0)) ; asks where (0,0) would be in frame vector space -> should return
-; origin of frame which is (1,1)
-;(origin-frame a-frame)
 (define d-frame (make-frame (make-vect 0 0) (make-vect 100 0) (make-vect 0 100)))
 (define u-frame (make-frame (make-vect 0 0) (make-vect 1 0) (make-vect 0 1)))
 
-
+;---------------------------------------
 ; Ex 2.49: Implementing painters
 ;(draw-line point1 point2) -> decomposes to (draw-line x1 y1 x2 y2)
 (define (x-painter frame)
@@ -327,7 +282,8 @@
 ;((flip-vert wave) u-frame)
 ;((below wave wave) u-frame)
 ;((beside diamond diamond) u-frame)
-((corner-split (flip-vert wave) 4) u-frame)
+;((corner-split (flip-vert wave) 4) u-frame)
+((corner-split-2 wave 2) u-frame)
 ;(x-painter u-frame)
 ;(outline u-frame)
 ;(diamond u-frame)
