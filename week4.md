@@ -71,7 +71,7 @@ We want to be able to change the implementation of a data type without affecting
 
 A powerful strategy for this: “wishful thinking” : start by thinking about how the inertace should look like then fill in implementation details accordingly. 
 
-### Hierarchical data and closure property: 
+## Idea 3: Hierarchical data and closure property: 
 
 Pairs is the primitive “glue”\
 If we can create pairs whose elements are pairs, this is called the closure property
@@ -81,7 +81,7 @@ An operation for combining data satisfies the closure property if the results of
 This allows us to create hierarchical structures (structures made of parts that are themselves made of parts and so on). 
 
 
-## Idea 3: abstract data type sequence (or list):
+### abstract data type sequence (or list):
  Sequence: an ordered sequence of things\
 We implement sequences using pairs, with:
 - each car pointing to an element and 
