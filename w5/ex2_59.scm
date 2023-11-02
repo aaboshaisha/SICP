@@ -30,13 +30,16 @@
 
 ; 2.59
 (define (union-set set1 set2)
-  (cond ((or (null? set1) (null? set2)) set2)
+  (cond ((null? set1)  set2)
+        ((null? set2) set1)
         ((not (element-of-set? (car set1) set2)) (union-set (cdr set1) (cons (car set1) set2)))
         (else (union-set (cdr set1) set2))))
 
 (union-set s s2)
 
 (union-set (list 1 2 3) (list 4 5 6))
+(union-set (list 1 2 3) '())
+(union-set '() (list 1 2 3))
 
 ; There is another implementation that used the signal processing paradigm
 (define (accumulate combiner initial items)
