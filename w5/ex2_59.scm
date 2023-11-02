@@ -35,3 +35,20 @@
         (else (union-set (cdr set1) set2))))
 
 (union-set s s2)
+
+(union-set (list 1 2 3) (list 4 5 6))
+
+; There is another implementation that used the signal processing paradigm
+(define (accumulate combiner initial items)
+  (if (null? items)
+      initial
+      (combiner (car items) (accumulate combiner initial (cdr items)))))
+
+
+
+(define (union-set-2 set1 set2)
+  (accumulate cons
+              set2
+              (filter (lambda (x) (not (element-of-set? x set2))) set1)))
+
+(union-set-2 s s2)
