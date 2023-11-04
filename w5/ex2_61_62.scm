@@ -31,7 +31,7 @@
 ;(adjoin-set 5 (list 1 2 4))
 ;(adjoin-set 0 (list 1 2 4))
 
-(define (union-set set1 set2)
+(define (union-set-it set1 set2)
   (define (union-iter set1 set2 result)
     (cond ((null? set1) (append result set2))
           ((null? set2) (append result set1))
@@ -44,6 +44,13 @@
   (union-iter set1 set2 '()))
 
 
+(define (union-set set1 set2)
+  (cond ((and (null? set1) (not (null? set2))) set2)
+        ((and (null? set2) (not (null? set1))) set1)
+        ((and (null? set1) (null? set2)) '())
+        ((< (car set1) (car set2)) (cons (car set1) (union-set (cdr set1) set2)))
+        ((> (car set1) (car set2)) (cons (car set2) (union-set set1 (cdr set2))))
+        ((= (car set1) (car set2)) (cons (car set1) (union-set (cdr set1) (cdr set2))))))
 
 
 (union-set (list 1 2 3) (list 1 3 4))

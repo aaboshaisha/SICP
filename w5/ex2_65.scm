@@ -87,16 +87,12 @@ This gives us: O(n) + O(n) + O(log n) => O(n)
 |#
 
 (define (union-list set1 set2)
-  (define (union-iter set1 set2 result)
-    (cond ((null? set1) (append result set2))
-          ((null? set2) (append result set1))
-          (else
-           (let ((x1 (car set1))
-                 (x2 (car set2)))
-             (cond ((< x1 x2) (union-iter (cdr set1) set2 (cons x1 result)))
-                   ((= x1 x2) (union-iter (cdr set1) (cdr set2) (cons x1 result)))
-                   ((> x1 x2) (union-iter set1 (cdr set2) (cons x2 result))))))))
-  (union-iter set1 set2 '()))
+  (cond ((and (null? set1) (not (null? set2))) set2)
+        ((and (null? set2) (not (null? set1))) set1)
+        ((and (null? set1) (null? set2)) '())
+        ((< (car set1) (car set2)) (cons (car set1) (union-list (cdr set1) set2)))
+        ((> (car set1) (car set2)) (cons (car set2) (union-list set1 (cdr set2))))
+        ((= (car set1) (car set2)) (cons (car set1) (union-list (cdr set1) (cdr set2))))))
 
 (define (intersection-list set1 set2)
   (if (or (null? set1) (null? set2)) '()
