@@ -1,6 +1,3 @@
-Certainly! Here's the provided text formatted in Markdown:
-
-```markdown
 # W5- Picture Language: Abstraction and Stratified Designs
 
 ## Core Idea: Abstraction
