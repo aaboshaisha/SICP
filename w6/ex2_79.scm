@@ -1,4 +1,6 @@
 #lang racket
+(require racket/trace)
+
 
 (define the-get/put-table (make-hash))
 
@@ -33,6 +35,8 @@
             "No method for these types -- APPLY-GENERIC"
             (list op type-tags))))))
 
+
+;(trace apply-generic)
 ;;;SECTION 2.5.1
 
 (define (add x y) (apply-generic 'add x y))
@@ -165,15 +169,24 @@
        (lambda (x y) (tag (make-from-real-imag x y))))
   (put 'make-from-mag-ang 'polar
        (lambda (r a) (tag (make-from-mag-ang r a))))
+
   'done)
 
 
+(define (real-part z) (apply-generic 'real-part z)) 
+(define (imag-part z) (apply-generic 'imag-part z)) 
+(define (magnitude z) (apply-generic 'magnitude z)) 
+(define (angle z) (apply-generic 'angle z))
+
 (define (install-complex-package)
+
   ;; imported procedures from rectangular and polar packages
   (define (make-from-real-imag x y)
     ((get 'make-from-real-imag 'rectangular) x y))
   (define (make-from-mag-ang r a)
     ((get 'make-from-mag-ang 'polar) r a))
+
+
   ;; internal procedures
   (define (add-complex z1 z2)
     (make-from-real-imag (+ (real-part z1) (real-part z2))
@@ -187,9 +200,7 @@
   (define (div-complex z1 z2)
     (make-from-mag-ang (/ (magnitude z1) (magnitude z2))
                        (- (angle z1) (angle z2))))
-  ; 2.79 2.80
-  (define (equ-complex z1 z2) (and (= (real-part z1) (real-part z2)) (= (imag-part z1) (imag-part z2)) ))
-  (define (=zero-complex z) (and (= (real-part z) 0) (= (imag-part z) 0) ))
+  
 
   ;; interface to rest of the system
   (define (tag z) (attach-tag 'complex z))
@@ -212,10 +223,16 @@
   (put 'magnitude '(complex) magnitude)
   (put 'angle '(complex) angle)
 
-  ; 2.79 2.80
+
+      ; 2.79 2.80
+  (define (equ-complex z1 z2) (and (= (real-part z1) (real-part z2)) (= (imag-part z1) (imag-part z2)) ))
+  (define (=zero-complex z) (and (= (real-part z) 0) (= (imag-part z) 0) ))
+    ; 2.79 2.80
   (put 'equ? '(complex complex) (lambda (z1 z2) (equ-complex z1 z2)))
   (put '=zero? '(complex) (lambda (z) (=zero-complex z)))
+  
   'done)
+
 
 
 (define (make-complex-from-real-imag x y)
@@ -232,6 +249,7 @@
 
 
 ; testing
+#|
 (define n1 (make-scheme-number 1))
 (define n2 (make-scheme-number 2))
 (define n3 (make-scheme-number 2))
@@ -245,9 +263,13 @@
 (define r2 (make-rational 75 100))
 (equ? r1 r2)
 (=zero? r1)
+|#
 
 (define c1 (make-complex-from-real-imag 3 4))
 (define c2 (make-complex-from-real-imag 1 2))
+c1
 
-;(equ? c1 c2)
-;(=zero? c1)
+(magnitude c1)
+(add c1 c2)
+(equ? c1 c2)
+(=zero? c1)
