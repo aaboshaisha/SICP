@@ -352,3 +352,4 @@ The operate procedure will look like:
 		whichever is smaller, raise one level up 
 		recursively call dyadic-operate till both levels the same -> apply procedure
 
+In this example, we’re lucky that there’s this natural subset relationship for arithemtic. This is not always the case (see geometric shapes example in the book). 
