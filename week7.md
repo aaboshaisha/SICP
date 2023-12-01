@@ -210,8 +210,8 @@ What happens when you send an object a message for which there is no method defi
 —> When the parent’s ask method says (ask self ’say ...) it uses the say method from the pigger class, not the one from the person class. So Porky speaks Pig Latin even when questioning something.
 
 `(question stuff) (ask self ’say….)` -> self points to porky, porky calls its say which speaks piglatin
+```
 
-**Table**
 | pigger | person |
 | --- | --- |
 | name=porky | name=person |
@@ -232,4 +232,3 @@ Inheritance: if I don’t know something -> ask my parent.
 Sometimes we want every new instance of some class to do some initial activity as soon as it gets created.
 E.g., we have a class of workers and it wants to maintain a list of all worker instances created.
 `(initialize (some procedure))`
-```
