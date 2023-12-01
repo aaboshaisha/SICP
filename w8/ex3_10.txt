@@ -1,5 +1,7 @@
 3.10  Let vs. parameter
 
+NB: I did this on paper but then copied this from Berkeley's notes after checross checking for better formatting
+
                                                args: initial-amount
                                            --> body: (let ...)
 global env:                                |

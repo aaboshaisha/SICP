@@ -1,5 +1,7 @@
 3.11  Message-passing example
 
+NB: I did this on paper but then copied this from Berkeley's notes after checross checking for better formatting
+
 global env:
 |------------------------------|
 | make-account: --------------------> (function) ---> global env
