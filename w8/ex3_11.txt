@@ -1,0 +1,72 @@
+3.11  Message-passing example
+
+global env:
+|------------------------------|
+| make-account: --------------------> (function) ---> global env
+|                              |
+| acc: --(pointer added later)------> (function A below)
+|------------------------------|
+
+When we (define acc (make-account 50)), a new frame is created that
+includes both make-account's parameters (balance) and its internal
+definitions (withdraw, deposit, dispatch):
+
+E1:
+|------------------------------|
+| balance: 50                  |----> global env
+|                              |
+| withdraw: -------------------------> (function W) ---> E1
+|                              |
+| deposit: --------------------------> (function D) ---> E1
+|                              |
+| dispatch: -------------------------> (function A) ---> E1
+|------------------------------|
+
+(The arrow I have in the top right corner has nothing to do with the
+binding of BALANCE; it's the back pointer for this frame.)
+
+At this point the symbol ACC is bound, in the global environment, to
+function A.
+
+Now we do ((acc 'deposit) 40).
+
+E2:
+|--------------------|
+| m: deposit         |----> E1
+|--------------------|
+
+The above results from evaluating (acc 'deposit), whose returned value is
+function D above.
+
+E3:
+|--------------------|
+| amount: 40         |----> E1
+|--------------------|
+
+The above frame results from (D 40) [so to speak].  Note that its back
+pointer points to E1, not E2, because that's what D points to.  Now we
+evaluate the body of D, which includes (set! balance (+ balance amount))
+The value for AMOUNT comes from E3, and the value for BALANCE from E1.
+The set! changes the value to which BALANCE is bound in E1, from 50 to 90.
+
+((acc 'withdraw) 60)
+
+similarly creates two new frames:
+
+E4:
+|--------------------|
+| m: withdraw        |----> E1
+|--------------------|
+
+E5:
+|--------------------|
+| amount: 60         |----> E1
+|--------------------|
+
+Again BALANCE is changed in E1, which is where ACC's local state is kept.
+If we define another account ACC2, we'll produce a new frame E6 that has
+the same symbols bound that E1 does, but bound to different things.  The
+only shared environment frame between ACC1 and ACC2 is the global environment.
+The functions in E6 are *not* the same as the functions D, W, and A in E1.
+(They may, depending on the implementation, have the same list structure
+as their bodies, but they don't have the same environment pointers.)
