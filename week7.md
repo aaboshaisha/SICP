@@ -198,6 +198,7 @@ What happens when you send an object a message for which there is no method defi
 )
 
 > (define porky (instantiate pigger ’porky))
+```
 
 —> when we do this, this pigger instance calls person calls and creates a ‘person’ instance inside porky which we’ll call ‘myperson’ —> which points to the object instane ‘proky
 
@@ -210,7 +211,7 @@ What happens when you send an object a message for which there is no method defi
 —> When the parent’s ask method says (ask self ’say ...) it uses the say method from the pigger class, not the one from the person class. So Porky speaks Pig Latin even when questioning something.
 
 `(question stuff) (ask self ’say….)` -> self points to porky, porky calls its say which speaks piglatin
-```
+
 
 | pigger | person |
 | --- | --- |
