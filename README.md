@@ -7,7 +7,7 @@ My solutions to exercises from "Structure and Interpretation of Computer Program
    - Each solution is meticulously crafted, demonstrating proficiency in algorithmic thinking and problem decomposition.
 
 2. **Functional Programming Proficiency:**
-   - SICP emphasizes functional programming principles, and my solutions showcase a solid grasp of concepts like first-class procedures, lexical scoping, and higher-order functions.
+   - SICP emphasizes functional programming principles, and solutions require a solid grasp of concepts like first-class procedures, lexical scoping, and higher-order functions.
 
 3. **Abstraction and Modularity:**
    - Solutions are designed with a focus on abstraction and modularity, adhering to the principles laid out in SICP.
