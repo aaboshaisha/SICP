@@ -1,0 +1,88 @@
+3.10  Let vs. parameter
+
+                                               args: initial-amount
+                                           --> body: (let ...)
+global env:                                |
+|------------------------------|           |
+| make-withdraw: --------------------> (function) --> global env
+|                              |
+| W1: -- (this pointer added later) -> (function A below)
+|                              |
+| W2: -- (this one added later too) -> (function B below)
+|------------------------------|
+
+The first invocation of make-withdraw creates a frame
+
+E1:
+|--------------------|
+|initial-amount: 100 |---> global env
+|--------------------|
+
+and in that frame evaluates the let, which makes an unnamed function
+
+                                       (function) --> E1
+                                           |
+                                           |    args: balance
+                                           ---> body: (lambda (amount) ...)
+
+then the same let applies the unnamed function to the argument expression
+initial-amount.  We are still in frame E1 so initial-amount has value 100.
+To apply the function we make a new frame:
+
+E2:
+|--------------------|
+|balance: 100        |---> E1
+|--------------------|
+
+Then in that frame we evaluate the body, the lambda expression:
+
+                                     (function A) --> E2
+                                         |
+                                         |    args: amount
+                                         ---> body: (if ...)
+
+Then the outer define makes global W1 point to this function.
+
+Now we do (W1 50).  This creates a frame:
+
+E3:
+|------------|
+|amount:  50 |---> E2
+|------------|
+
+Frame E3 points to E2 because function A (i.e. W1) points to E2.
+Within frame E3 we evaluate the body of function A, the (if ...).
+During this evaluation the symbol AMOUNT is bound in E3, while
+BALANCE is bound in E2.  So the set! changes BALANCE in E2 from
+100 to 50.
+
+Now we make W2, creating two new frames in the process:
+
+E4:
+|--------------------|
+|initial-amount: 100 |---> global env
+|--------------------|
+
+                                       (function) --> E4
+                                           |
+                                           |    args: balance
+                                           ---> body: (lambda (amount) ...)
+
+E5:
+|--------------------|
+|balance: 100        |---> E4
+|--------------------|
+
+                                     (function B) --> E5
+                                         |
+                                         |    args: amount
+                                         ---> body: (if ...)
+
+Then the outer define makes global W2 point to this function.
+
+Summary: the two versions of make-withdraw create objects with the same
+behavior because in each case the functions A and B are defined within
+individual frames that bind BALANCE.  The environment structures differ
+because this new version has, for each account, an extra frame containing
+the binding for initial-amount.
+
