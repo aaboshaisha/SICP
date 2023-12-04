@@ -40,3 +40,38 @@ j
 
 (define p (cons 1 (cons 2 3)))
 (count-pairs (list p p p))
+
+#|
+To think about this problem, think of the structure of lists as a "Tree" structure visualized as follows:
+
+(list 1 2 3)
+     
+     list
+     / | \
+    1  2  3
+
+
+(list 1 2 (cons 3 4))
+
+        list
+       / | \
+      1  2  cons
+            / \
+           3   4
+
+
+And for j above,
+
+        (j..)
+       /    \
+      i      i
+      |      |
+     (i..)   (i..)
+     /   \   /   \
+    h     h h     h
+    |     | |     |
+    1     1 1     1
+
+Now, the count-pairs algorithm will count each pair it encounters (from top to bottom of the tree) regardless
+of whether the pointers of the pairs point to the same memory spaces.
+|#
