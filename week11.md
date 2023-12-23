@@ -22,7 +22,6 @@ Previously we implemented sequences using lists.
 Implementing the “entire history of values” (signal) with a list will be very inefficient. Why?
 Recall previously when we implemented the signal-processing paradigm in Week 5 using `map`, `filter`, `accumulate`. Consider the following example (from the notes):
 
-Certainly! Here's the provided text formatted for Markdown:
 
 ```scheme
 (define (prime? n)
