@@ -26,6 +26,7 @@
 (put 'cond (lambda (exp env) (eval (cond->if exp) env)))
 
 
+#|
 (define (eval exp env)
   (cond ((self-evaluating? exp) exp)
         ((variable? exp) (lookup-variable-value exp env))
@@ -35,7 +36,19 @@
                 (list-of-values (operands exp) env)))
         (else
          (error "Unknow expression type --EVAL" exp))))
+|#
+;; reimplementd 
+(define (operator exp) (car exp))
 
-
-        
+(define (eval exp env)
+  (cond ((self-evaluating? exp) exp)
+        ((variable? exp) (lookup-variable-value exp env))
+        (let ((special-form (operator exp)))
+          (if special-form
+              (special-form exp env)
+              ((application? exp)
+               (apply (eval (operator exp) env)
+                      (list-of-values (operands exp) env)))))
+        (else
+         (error "Unknow expression type --EVAL" exp))))   
   
