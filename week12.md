@@ -203,11 +203,11 @@ What does "meaning" here mean?
 
 We may regard this program as the description of a machine containing parts that decrement, multiply, and test for equality, together with a two-position switch and another factorial machine. (The factorial machine is infinite because it contains another factorial machine within it.)
 
-![Image-1](w12-img1)
+![Image-1](w12-img1.png)
 
 Similarly, the evaluator becomes a very special machine that takes as input a description of a machine. Given this input, the evaluator configures itself to emulate the machine described. For example, if we feed our evaluator the definition of factorial, the evaluator will be able to compute factorials.
 
-![Image-2](w12-img2)
+![Image-2](w12-img2.png)
 
 This is the idea of universality: we can write one program (make one machine) that is equivalent to / could emulate all other machines. This single machine requires we provide it as input the formal description of other machines (accepts other machines / programs as data).
 
